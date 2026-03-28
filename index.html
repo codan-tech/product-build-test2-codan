@@ -5,54 +5,112 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>로또 번호 추천기</title>
 	<style>
+		:root {
+			--bg-gradient: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+			--container-bg: rgba(255, 255, 255, 0.95);
+			--text-primary: #2d3a4b;
+			--text-secondary: #555;
+			--ball-bg-default: #43c6ac;
+			--ball-text: #fff;
+			--btn-bg: #43c6ac;
+			--btn-hover: #2d3a4b;
+			--toggle-bg: #f0f0f0;
+			--toggle-text: #333;
+		}
+
+		[data-theme='dark'] {
+			--bg-gradient: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+			--container-bg: rgba(30, 30, 30, 0.95);
+			--text-primary: #f0f0f0;
+			--text-secondary: #ccc;
+			--ball-bg-default: #ff5e62;
+			--ball-text: #fff;
+			--btn-bg: #ff5e62;
+			--btn-hover: #ff9966;
+			--toggle-bg: #333;
+			--toggle-text: #fff;
+		}
+
 		body {
 			font-family: 'Segoe UI', Arial, sans-serif;
-			background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+			background: var(--bg-gradient);
 			min-height: 100vh;
 			margin: 0;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
+			transition: background 0.3s ease;
 		}
+
+		.theme-toggle {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			background: var(--toggle-bg);
+			color: var(--toggle-text);
+			border: none;
+			padding: 0.5rem 1rem;
+			border-radius: 1rem;
+			cursor: pointer;
+			font-weight: bold;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+			transition: all 0.3s ease;
+		}
+
 		.container {
-			background: rgba(255,255,255,0.95);
+			background: var(--container-bg);
 			padding: 2rem 2.5rem;
 			border-radius: 1.5rem;
-			box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+			box-shadow: 0 4px 24px rgba(0,0,0,0.2);
 			text-align: center;
+			transition: background 0.3s ease;
+			max-width: 90%;
 		}
+
 		h1 {
-			color: #2d3a4b;
+			color: var(--text-primary);
 			margin-bottom: 1.5rem;
 		}
+
 		.numbers {
 			display: flex;
 			justify-content: center;
+			flex-wrap: wrap;
 			gap: 1rem;
 			margin: 2rem 0 1.5rem 0;
 		}
+
 		.ball {
 			width: 48px;
 			height: 48px;
-			background: #43c6ac;
-			color: #fff;
+			background: var(--ball-bg-default);
+			color: var(--ball-text);
 			font-size: 1.5rem;
 			font-weight: bold;
 			border-radius: 50%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			box-shadow: 0 2px 8px rgba(67,198,172,0.2);
-			transition: background 0.2s;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+			transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			transform: scale(0);
 		}
-		.ball:nth-child(2n) { background: #f8ffae; color: #2d3a4b; }
-		.ball:nth-child(3n) { background: #ffb347; color: #fff; }
-		.ball:nth-child(4n) { background: #ff5e62; color: #fff; }
-		.ball:nth-child(5n) { background: #4a90e2; color: #fff; }
-		.ball:nth-child(6n) { background: #7b4397; color: #fff; }
-		button {
-			background: #43c6ac;
+
+		.ball.show {
+			transform: scale(1);
+		}
+
+		/* 공 색상 다양화 - 다크모드에서도 잘 보이도록 조정 */
+		.ball:nth-child(1) { background: #e74c3c; }
+		.ball:nth-child(2) { background: #e67e22; }
+		.ball:nth-child(3) { background: #f1c40f; }
+		.ball:nth-child(4) { background: #2ecc71; }
+		.ball:nth-child(5) { background: #3498db; }
+		.ball:nth-child(6) { background: #9b59b6; }
+
+		button.generate-btn {
+			background: var(--btn-bg);
 			color: #fff;
 			border: none;
 			border-radius: 2rem;
@@ -60,39 +118,86 @@
 			font-size: 1.1rem;
 			font-weight: bold;
 			cursor: pointer;
-			box-shadow: 0 2px 8px rgba(67,198,172,0.15);
-			transition: background 0.2s;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+			transition: all 0.2s ease;
 		}
-		button:hover {
-			background: #2d3a4b;
+
+		button.generate-btn:hover {
+			background: var(--btn-hover);
+			transform: translateY(-2px);
 		}
+
+		button.generate-btn:active {
+			transform: translateY(0);
+		}
+
 		.desc {
-			color: #555;
+			color: var(--text-secondary);
 			font-size: 1rem;
 			margin-bottom: 2rem;
 		}
 	</style>
 </head>
 <body>
+	<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">다크 모드</button>
+	
 	<div class="container">
 		<h1>로또 번호 추천기</h1>
 		<div class="desc">버튼을 누르면 1~45 사이의 중복 없는 6개 번호를 추천해드립니다.</div>
 		<div class="numbers" id="numbers">
 			<!-- 추천 번호가 여기에 표시됩니다 -->
 		</div>
-		<button onclick="generateLotto()">번호 추천받기</button>
+		<button class="generate-btn" onclick="generateLotto()">번호 추천받기</button>
 	</div>
+
 	<script>
+		function toggleTheme() {
+			const body = document.body;
+			const btn = document.getElementById('themeBtn');
+			const currentTheme = body.getAttribute('data-theme');
+			
+			if (currentTheme === 'dark') {
+				body.removeAttribute('data-theme');
+				btn.textContent = '다크 모드';
+				localStorage.setItem('theme', 'light');
+			} else {
+				body.setAttribute('data-theme', 'dark');
+				btn.textContent = '화이트 모드';
+				localStorage.setItem('theme', 'dark');
+			}
+		}
+
+		// 저장된 테마 불러오기
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme === 'dark') {
+			document.body.setAttribute('data-theme', 'dark');
+			document.getElementById('themeBtn').textContent = '화이트 모드';
+		}
+
 		function generateLotto() {
+			const numbersDiv = document.getElementById('numbers');
+			numbersDiv.innerHTML = ''; // 초기화
+
 			const numbers = [];
 			while (numbers.length < 6) {
 				const n = Math.floor(Math.random() * 45) + 1;
 				if (!numbers.includes(n)) numbers.push(n);
 			}
 			numbers.sort((a, b) => a - b);
-			const numbersDiv = document.getElementById('numbers');
-			numbersDiv.innerHTML = numbers.map(num => `<div class='ball'>${num}</div>`).join('');
+			
+			numbers.forEach((num, index) => {
+				const ball = document.createElement('div');
+				ball.className = 'ball';
+				ball.textContent = num;
+				numbersDiv.appendChild(ball);
+				
+				// 애니메이션 효과 (순차적으로 나타나기)
+				setTimeout(() => {
+					ball.classList.add('show');
+				}, index * 100);
+			});
 		}
+
 		// 페이지 로드시 자동 추천
 		window.onload = generateLotto;
 	</script>
