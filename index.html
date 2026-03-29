@@ -150,8 +150,84 @@
 		
 		<button class="recommend-btn" onclick="recommendMenu()">메뉴 추천받기</button>
 		
+		<div class="contact-section">
+			<h3>의견 보내기</h3>
+			<form action="https://formspree.io/f/xdapeerj" method="POST">
+				<div class="form-group">
+					<input type="text" name="name" placeholder="이름" required>
+				</div>
+				<div class="form-group">
+					<input type="email" name="email" placeholder="이메일" required>
+				</div>
+				<div class="form-group">
+					<textarea name="message" placeholder="추천하고 싶은 메뉴나 의견을 남겨주세요" required></textarea>
+				</div>
+				<button type="submit" class="submit-btn">보내기</button>
+			</form>
+		</div>
+		
 		<footer>한식 메뉴 중에서만 엄선했습니다</footer>
 	</div>
+
+	<style>
+		.contact-section {
+			margin-top: 3rem;
+			padding-top: 2rem;
+			border-top: 1px solid var(--toggle-bg);
+			text-align: left;
+		}
+
+		.contact-section h3 {
+			color: var(--text-primary);
+			font-size: 1.1rem;
+			margin-bottom: 1rem;
+			text-align: center;
+		}
+
+		.form-group {
+			margin-bottom: 0.8rem;
+		}
+
+		.form-group input, 
+		.form-group textarea {
+			width: 100%;
+			padding: 0.8rem;
+			border: 1px solid var(--toggle-bg);
+			border-radius: 0.5rem;
+			background: var(--toggle-bg);
+			color: var(--text-primary);
+			font-family: inherit;
+			box-sizing: border-box;
+			transition: border-color 0.2s;
+		}
+
+		.form-group input:focus, 
+		.form-group textarea:focus {
+			outline: none;
+			border-color: var(--btn-bg);
+		}
+
+		.form-group textarea {
+			height: 80px;
+			resize: none;
+		}
+
+		.submit-btn {
+			width: 100%;
+			padding: 0.8rem;
+			background: var(--text-secondary);
+			color: white;
+			border: none;
+			border-radius: 0.5rem;
+			font-weight: bold;
+			cursor: pointer;
+			transition: background 0.2s;
+		}
+
+		.submit-btn:hover {
+			background: var(--text-primary);
+		}
+	</style>
 
 	<script>
 		const koreanMenus = [
