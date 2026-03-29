@@ -414,8 +414,8 @@
 		}
 		window.onload = recommendMenu;
 
-		// Animal Test Logic (Image Upload)
-		const TM_URL = "./my_model/";
+		// Animal Test Logic (Remote URL)
+		const TM_URL = "https://teachablemachine.withgoogle.com/models/nVbPuJdGu/";
 		let model, labelContainer, maxPredictions;
 
 		async function initModel() {
@@ -477,7 +477,7 @@
 		// Disqus
 		var disqus_config = function () {
 			this.page.url = window.location.href;
-			this.page.identifier = 'combined-service-v2';
+			this.page.identifier = 'combined-service-v3';
 		};
 		(function() {
 			var d = document, s = d.createElement('script');
