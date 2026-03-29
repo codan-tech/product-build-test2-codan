@@ -309,26 +309,26 @@
 </head>
 <body>
 	<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">다크 모드</button>
+<title>강아지 vs 고양이 AI 테스트</title>
+...
+<div class="nav-tabs">
+	<button class="nav-tab active" onclick="switchSection('menu')">저녁 메뉴 추천</button>
+	<button class="nav-tab" onclick="switchSection('animal')">강아지 vs 고양이</button>
+</div>
 
-	<div class="nav-tabs">
-		<button class="nav-tab active" onclick="switchSection('menu')">저녁 메뉴 추천</button>
-		<button class="nav-tab" onclick="switchSection('animal')">동물상 테스트</button>
-	</div>
+<div class="container active" id="menu-section">
+	<h1>저녁 뭐 먹지?</h1>
+	<p class="subtitle">오늘 저녁은 정갈한 한식 어떠세요?</p>
+	<div class="menu-display" id="menuDisplay"></div>
+	<button class="action-btn" onclick="recommendMenu()">메뉴 추천받기</button>
+	<p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+		* 강아지 vs 고양이 테스트가 궁금하시면 상단 탭을 눌러보세요!
+	</p>
+</div>
 
-	<div class="container active" id="menu-section">
-		<h1>저녁 뭐 먹지?</h1>
-		<p class="subtitle">오늘 저녁은 정갈한 한식 어떠세요?</p>
-		<div class="menu-display" id="menuDisplay"></div>
-		<button class="action-btn" onclick="recommendMenu()">메뉴 추천받기</button>
-		<p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
-			* 동물상 테스트가 궁금하시면 상단 탭을 눌러보세요!
-		</p>
-	</div>
-
-	<div class="container" id="animal-section">
-		<h1>동물상 테스트</h1>
-		<p class="subtitle">사진을 업로드하여 분석하는 나의 동물상</p>
-		
+<div class="container" id="animal-section">
+	<h1>강아지 vs 고양이 AI</h1>
+	<p class="subtitle">사진을 업로드하여 분석하는 나의 점수</p>
 		<div class="file-upload">
 			<input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
 			<div class="drag-text">
