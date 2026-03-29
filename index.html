@@ -3,44 +3,44 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>오늘의 저녁 메뉴 추천기</title>
+	<title>인공지능 동물상 테스트</title>
 	<style>
 		:root {
-			--bg-gradient: linear-gradient(135deg, #fff5e6 0%, #ffcc80 100%);
+			--bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
 			--container-bg: rgba(255, 255, 255, 0.95);
-			--text-primary: #5d4037;
-			--text-secondary: #8d6e63;
-			--menu-card-bg: #ff9800;
-			--menu-card-text: #fff;
-			--btn-bg: #ef6c00;
-			--btn-hover: #e65100;
-			--toggle-bg: #efebe9;
-			--toggle-text: #5d4037;
+			--text-primary: #2d3436;
+			--text-secondary: #636e72;
+			--accent-color: #0984e3;
+			--btn-bg: #0984e3;
+			--btn-hover: #0773c5;
+			--toggle-bg: #dfe6e9;
+			--toggle-text: #2d3436;
+			--card-shadow: 0 10px 30px rgba(0,0,0,0.1);
 		}
 
 		[data-theme='dark'] {
-			--bg-gradient: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+			--bg-gradient: linear-gradient(135deg, #2d3436 0%, #000000 100%);
 			--container-bg: rgba(45, 45, 45, 0.95);
-			--text-primary: #ecf0f1;
-			--text-secondary: #bdc3c7;
-			--menu-card-bg: #e67e22;
-			--menu-card-text: #fff;
-			--btn-bg: #d35400;
-			--btn-hover: #e67e22;
+			--text-primary: #dfe6e9;
+			--text-secondary: #b2bec3;
+			--accent-color: #74b9ff;
+			--btn-bg: #0984e3;
+			--btn-hover: #74b9ff;
 			--toggle-bg: #34495e;
-			--toggle-text: #ecf0f1;
+			--toggle-text: #dfe6e9;
+			--card-shadow: 0 10px 30px rgba(0,0,0,0.5);
 		}
 
 		body {
-			font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+			font-family: 'Pretendard', sans-serif;
 			background: var(--bg-gradient);
 			min-height: 100vh;
 			margin: 0;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			justify-content: center;
 			transition: background 0.3s ease;
+			padding: 2rem 0;
 		}
 
 		.theme-toggle {
@@ -55,78 +55,125 @@
 			cursor: pointer;
 			font-weight: bold;
 			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-			transition: all 0.3s ease;
+			z-index: 10;
 		}
 
 		.container {
 			background: var(--container-bg);
 			padding: 3rem 2rem;
 			border-radius: 2rem;
-			box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+			box-shadow: var(--card-shadow);
 			text-align: center;
-			transition: background 0.3s ease;
-			width: 350px;
+			width: 500px;
 			max-width: 90%;
+			margin-bottom: 2rem;
 		}
 
 		h1 {
 			color: var(--text-primary);
 			margin-bottom: 0.5rem;
-			font-size: 1.8rem;
+			font-size: 2rem;
 		}
 
-		.desc {
+		.subtitle {
 			color: var(--text-secondary);
-			font-size: 0.95rem;
-			margin-bottom: 2.5rem;
+			margin-bottom: 2rem;
 		}
 
-		.menu-display {
-			height: 120px;
+		#webcam-container {
+			margin: 2rem auto;
+			border-radius: 1rem;
+			overflow: hidden;
+			width: 300px;
+			height: 300px;
+			background: #eee;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-bottom: 2.5rem;
+			box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 		}
 
-		.menu-card {
-			background: var(--menu-card-bg);
-			color: var(--menu-card-text);
-			padding: 1.5rem 2.5rem;
+		#webcam-container canvas {
+			width: 100% !important;
+			height: auto !important;
 			border-radius: 1rem;
-			font-size: 2rem;
-			font-weight: 800;
-			box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-			transform: scale(0);
-			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		}
 
-		.menu-card.show {
-			transform: scale(1);
-		}
-
-		button.recommend-btn {
+		.start-btn {
 			background: var(--btn-bg);
-			color: #fff;
+			color: white;
 			border: none;
-			border-radius: 2.5rem;
-			padding: 1rem 2.5rem;
+			padding: 1rem 3rem;
 			font-size: 1.2rem;
 			font-weight: bold;
+			border-radius: 3rem;
 			cursor: pointer;
-			box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-			transition: all 0.2s ease;
-			width: 100%;
+			transition: all 0.3s;
+			box-shadow: 0 4px 15px rgba(9, 132, 227, 0.3);
 		}
 
-		button.recommend-btn:hover {
+		.start-btn:hover {
 			background: var(--btn-hover);
-			transform: translateY(-3px);
-			box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+			transform: translateY(-2px);
 		}
 
-		button.recommend-btn:active {
-			transform: translateY(-1px);
+		#label-container {
+			margin-top: 2rem;
+			text-align: left;
+		}
+
+		.result-bar-wrapper {
+			margin-bottom: 1rem;
+		}
+
+		.result-label {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 0.3rem;
+			color: var(--text-primary);
+			font-weight: 500;
+		}
+
+		.bar-container {
+			height: 15px;
+			background: var(--toggle-bg);
+			border-radius: 10px;
+			overflow: hidden;
+		}
+
+		.bar-fill {
+			height: 100%;
+			background: var(--accent-color);
+			width: 0%;
+			transition: width 0.3s ease;
+		}
+
+		/* Comments and Contact */
+		.sub-section {
+			width: 500px;
+			max-width: 90%;
+			background: var(--container-bg);
+			padding: 2rem;
+			border-radius: 2rem;
+			box-shadow: var(--card-shadow);
+			margin-bottom: 2rem;
+		}
+
+		.contact-section h3 {
+			color: var(--text-primary);
+			text-align: center;
+			margin-top: 0;
+		}
+
+		.form-group { margin-bottom: 1rem; }
+		.form-group input, .form-group textarea {
+			width: 100%; padding: 0.8rem; border: 1px solid var(--toggle-bg);
+			border-radius: 0.5rem; background: var(--toggle-bg); color: var(--text-primary);
+			box-sizing: border-box;
+		}
+		.submit-btn {
+			width: 100%; padding: 0.8rem; background: var(--btn-bg); color: white;
+			border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer;
 		}
 
 		footer {
@@ -139,141 +186,47 @@
 </head>
 <body>
 	<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">다크 모드</button>
-	
-	<div class="container">
-		<h1>저녁 뭐 먹지?</h1>
-		<div class="desc">오늘 저녁은 정갈한 한식 어떠세요?</div>
-		
-		<div class="menu-display" id="menuDisplay">
-			<!-- 추천 메뉴가 여기에 표시됩니다 -->
-		</div>
-		
-		<button class="recommend-btn" onclick="recommendMenu()">메뉴 추천받기</button>
-		
-		<div class="contact-section">
-			<h3>의견 보내기</h3>
-			<form action="https://formspree.io/f/xdapeerj" method="POST">
-				<div class="form-group">
-					<input type="text" name="name" placeholder="이름" required>
-				</div>
-				<div class="form-group">
-					<input type="email" name="email" placeholder="이메일" required>
-				</div>
-				<div class="form-group">
-					<textarea name="message" placeholder="추천하고 싶은 메뉴나 의견을 남겨주세요" required></textarea>
-				</div>
-				<button type="submit" class="submit-btn">보내기</button>
-			</form>
-		</div>
 
-		<div class="comments-section">
-			<div id="disqus_thread"></div>
-			<script>
-				/**
-				*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-				*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-				/*
-				var disqus_config = function () {
-				this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-				this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-				};
-				*/
-				(function() { // DON'T EDIT BELOW THIS LINE
-				var d = document, s = d.createElement('script');
-				s.src = 'https://testsite1-codan.disqus.com/embed.js';
-				s.setAttribute('data-timestamp', +new Date());
-				(d.head || d.body).appendChild(s);
-				})();
-			</script>
-			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	<div class="container">
+		<h1>동물상 테스트</h1>
+		<p class="subtitle">AI가 분석하는 나의 강아지상/고양이상 점수</p>
+		
+		<div id="webcam-container">
+			<div style="color: #636e72;">카메라를 허용하고 시작 버튼을 눌러주세요</div>
 		</div>
 		
-		<footer>한식 메뉴 중에서만 엄선했습니다</footer>
+		<button class="start-btn" type="button" onclick="init()" id="startBtn">테스트 시작하기</button>
+		
+		<div id="label-container"></div>
 	</div>
 
-	<style>
-		.contact-section {
-			margin-top: 3rem;
-			padding-top: 2rem;
-			border-top: 1px solid var(--toggle-bg);
-			text-align: left;
-		}
+	<!-- Contact Section -->
+	<div class="sub-section contact-section">
+		<h3>의견 보내기</h3>
+		<form action="https://formspree.io/f/xdapeerj" method="POST">
+			<div class="form-group"><input type="text" name="name" placeholder="이름" required></div>
+			<div class="form-group"><input type="email" name="email" placeholder="이메일" required></div>
+			<div class="form-group"><textarea name="message" placeholder="의견을 남겨주세요" required></textarea></div>
+			<button type="submit" class="submit-btn">보내기</button>
+		</form>
+	</div>
 
-		.comments-section {
-			margin-top: 3rem;
-			padding-top: 2rem;
-			border-top: 1px solid var(--toggle-bg);
-		}
+	<!-- Comments Section -->
+	<div class="sub-section">
+		<div id="disqus_thread"></div>
+	</div>
 
-		.contact-section h3 {
-			color: var(--text-primary);
-			font-size: 1.1rem;
-			margin-bottom: 1rem;
-			text-align: center;
-		}
+	<footer>© 2026 Animal Face AI Test. All rights reserved.</footer>
 
-		.form-group {
-			margin-bottom: 0.8rem;
-		}
-
-		.form-group input, 
-		.form-group textarea {
-			width: 100%;
-			padding: 0.8rem;
-			border: 1px solid var(--toggle-bg);
-			border-radius: 0.5rem;
-			background: var(--toggle-bg);
-			color: var(--text-primary);
-			font-family: inherit;
-			box-sizing: border-box;
-			transition: border-color 0.2s;
-		}
-
-		.form-group input:focus, 
-		.form-group textarea:focus {
-			outline: none;
-			border-color: var(--btn-bg);
-		}
-
-		.form-group textarea {
-			height: 80px;
-			resize: none;
-		}
-
-		.submit-btn {
-			width: 100%;
-			padding: 0.8rem;
-			background: var(--text-secondary);
-			color: white;
-			border: none;
-			border-radius: 0.5rem;
-			font-weight: bold;
-			cursor: pointer;
-			transition: background 0.2s;
-		}
-
-		.submit-btn:hover {
-			background: var(--text-primary);
-		}
-	</style>
-
-	<script>
-		const koreanMenus = [
-			"김치찌개", "된장찌개", "비빔밥", "불고기", "제육볶음", 
-			"보쌈", "족발", "삼겹살", "물냉면", "비빔냉면", 
-			"칼국수", "수제비", "육개장", "설렁탕", "갈비탕", 
-			"닭갈비", "아구찜", "해물파전", "떡볶이", "김밥", 
-			"잡채", "부대찌개", "감자탕", "닭볶음탕", "곰탕", 
-			"순대국", "뼈해장국", "청국장", "낙지볶음", "오징어볶음",
-			"콩나물불고기", "뚝배기불고기", "고등어조림", "갈치조림", "순두부찌개"
-		];
-
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+	
+	<script type="text/javascript">
+		// Theme Toggle Logic
 		function toggleTheme() {
 			const body = document.body;
 			const btn = document.getElementById('themeBtn');
-			const currentTheme = body.getAttribute('data-theme');
-			
-			if (currentTheme === 'dark') {
+			if (body.getAttribute('data-theme') === 'dark') {
 				body.removeAttribute('data-theme');
 				btn.textContent = '다크 모드';
 				localStorage.setItem('theme', 'light');
@@ -283,33 +236,86 @@
 				localStorage.setItem('theme', 'dark');
 			}
 		}
-
-		const savedTheme = localStorage.getItem('theme');
-		if (savedTheme === 'dark') {
+		if (localStorage.getItem('theme') === 'dark') {
 			document.body.setAttribute('data-theme', 'dark');
 			document.getElementById('themeBtn').textContent = '화이트 모드';
 		}
 
-		function recommendMenu() {
-			const display = document.getElementById('menuDisplay');
-			display.innerHTML = ''; // 초기화
+		// Teachable Machine Logic
+		const URL = "./my_model/";
+		let model, webcam, labelContainer, maxPredictions;
 
-			const randomIndex = Math.floor(Math.random() * koreanMenus.length);
-			const selectedMenu = koreanMenus[randomIndex];
+		async function init() {
+			document.getElementById('startBtn').style.display = 'none';
+			document.getElementById('webcam-container').innerHTML = '모델 로딩 중...';
 			
-			const card = document.createElement('div');
-			card.className = 'menu-card';
-			card.textContent = selectedMenu;
-			display.appendChild(card);
-			
-			// 애니메이션 효과
-			setTimeout(() => {
-				card.classList.add('show');
-			}, 50);
+			const modelURL = URL + "model.json";
+			const metadataURL = URL + "metadata.json";
+
+			try {
+				model = await tmImage.load(modelURL, metadataURL);
+				maxPredictions = model.getTotalClasses();
+
+				const flip = true;
+				webcam = new tmImage.Webcam(300, 300, flip);
+				await webcam.setup();
+				await webcam.play();
+				window.requestAnimationFrame(loop);
+
+				document.getElementById("webcam-container").innerHTML = "";
+				document.getElementById("webcam-container").appendChild(webcam.canvas);
+				
+				labelContainer = document.getElementById("label-container");
+				for (let i = 0; i < maxPredictions; i++) {
+					const wrapper = document.createElement("div");
+					wrapper.className = "result-bar-wrapper";
+					wrapper.innerHTML = `
+						<div class="result-label">
+							<span class="class-name"></span>
+							<span class="probability">0%</span>
+						</div>
+						<div class="bar-container">
+							<div class="bar-fill"></div>
+						</div>
+					`;
+					labelContainer.appendChild(wrapper);
+				}
+			} catch (e) {
+				document.getElementById('webcam-container').innerHTML = '오류: 모델 파일을 찾을 수 없습니다. (./my_model/ 폴더를 확인해주세요)';
+				document.getElementById('startBtn').style.display = 'inline-block';
+			}
 		}
 
-		// 페이지 로드시 자동 추천
-		window.onload = recommendMenu;
+		async function loop() {
+			webcam.update();
+			await predict();
+			window.requestAnimationFrame(loop);
+		}
+
+		async function predict() {
+			const prediction = await model.predict(webcam.canvas);
+			for (let i = 0; i < maxPredictions; i++) {
+				const className = prediction[i].className;
+				const probability = (prediction[i].probability * 100).toFixed(0);
+				
+				const wrapper = labelContainer.childNodes[i];
+				wrapper.querySelector('.class-name').innerText = className;
+				wrapper.querySelector('.probability').innerText = probability + "%";
+				wrapper.querySelector('.bar-fill').style.width = probability + "%";
+			}
+		}
+
+		// Disqus Logic
+		var disqus_config = function () {
+			this.page.url = window.location.href;
+			this.page.identifier = 'animal-face-test';
+		};
+		(function() {
+			var d = document, s = d.createElement('script');
+			s.src = 'https://testsite1-codan.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+		})();
 	</script>
 </body>
 </html>
